@@ -1,16 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Main/Navbar';
-import Content from './components/Main/Content';
-import Footer from './components/Main/Footer';
-import Services from './ITRequest/ITServices';
-import ITHardware from './ITRequest/ITHardware';
-import ITDevelopment from './ITRequest/ITDevelopment';
-import DataGridUAT from './ITRequest/DataGridUAT';
-import Maintanance_Client from './components/Maintanance/Maintanance_Client';
-import 'primereact/resources/themes/saga-blue/theme.css';  // หรือธีมอื่น ๆ ที่คุณเลือก
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
+import Navbar from './components/Navbar';
+import Content from './components/Content';
+import Footer from './components/Footer';
+import Services from './components/ITServices';
+import ITHardware from './components/ITHardware';
+import ITDevelopment from './components/ITDevelopment';
+import DataGridUAT from './components/DataGridUAT';
 
 function App() {
   return (
@@ -23,9 +19,6 @@ function App() {
         <Route path="/it-hardware" element={<ITHardware />} />
         <Route path="/it-development" element={<ITDevelopment />} />
         <Route path="/DataGridUAT" element={<DataGridUAT />}  />
-        <Route path="/maintanance-client" element={<Maintanance_Client />}  />
-        <Route path="/maintanance-client" element={<Maintanance_Client />}  />
-        <Route path="/maintanance-client" element={<Maintanance_Client />}  />
       </Routes>
       <br />
       <Footer />
