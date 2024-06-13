@@ -36,7 +36,7 @@
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   },
-    "engines": {
-    "node": ">=14.0.0" // Specify your Node.js version
+  "engines": {
+    "node": ">=14.0.0"
   }
 }
