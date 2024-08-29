@@ -13,7 +13,7 @@ const images = [
   {
     url: 'https://www.cloudhostltd.com/wp-content/uploads/2022/01/IT-Support-CloudHost.png',
     title: 'IT Services',
-    link: '/it-services',
+    link: '/list-services',
     detail: 'สำหรับผู้ที่ต้องการแจ้งบริการทั่วไป เช่น เครื่องคอมฯมีปัญหา, โปรแกรมมีปัญหา, อุปกรณ์คอมฯเสีย, Internet มีปัญหา เป็นต้น',
   },
   {
