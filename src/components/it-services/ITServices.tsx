@@ -28,6 +28,7 @@ import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { Link } from 'react-router-dom';
 
 const Item = styled(Sheet)(({ theme }) => ({
   backgroundColor:
@@ -38,6 +39,13 @@ const Item = styled(Sheet)(({ theme }) => ({
   borderRadius: 4,
   color: theme.vars.palette.text.secondary,
 }));
+
+const steps = [
+  { label: 'Request', path: '/it-services' },
+  { label: 'IT Admin', path: '/it-manager' },
+  { label: 'Manager Approve', path: '/it-admin' },
+  { label: 'Director Approved', path: '/director-approved' }
+];
 
 function Services() {
   const [value1, setValue1] = useState<string | null>('approve');
@@ -56,36 +64,39 @@ function Services() {
     setFiles((prevFiles) => prevFiles.filter((_, index) => index !== fileIndex));
   };
 
-  const steps = ['Request', 'IT Admin', 'Manager Approve', 'Director Approved'];
+  // const steps = ['Request', 'IT Admin', 'Manager Approve', 'Director Approved'];
   const [activeStep, setActiveStep] = useState<number>(0);
+
+  
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Stepper>
-          {steps.map((step, index) => (
-            <Step
-              key={step}
-              indicator={
-                <StepIndicator
-                  variant={activeStep <= index ? 'soft' : 'solid'}
-                  color={activeStep < index ? 'neutral' : 'primary'}
-                >
-                  {activeStep <= index ? index + 1 : <Check />}
-                </StepIndicator>
-              }
-              sx={{
-                '&::after': {
-                  ...(activeStep > index &&
-                    index !== 2 && { bgcolor: 'primary.solidBg' }),
-                },
-              }}
+      <Stepper>
+      {steps.map((step, index) => (
+        <Step
+          key={step.label}
+          indicator={
+            <StepIndicator
+              variant={activeStep <= index ? 'soft' : 'solid'}
+              color={activeStep < index ? 'neutral' : 'primary'}
             >
-              <StepButton onClick={() => setActiveStep(index)}>{step}</StepButton>
-            </Step>
-          ))}
-        </Stepper>
+              {activeStep <= index ? index + 1 : <Check />}
+            </StepIndicator>
+          }
+          sx={{
+            '&::after': {
+              ...(activeStep > index && index !== 2 && { bgcolor: 'primary.solidBg' }),
+            },
+          }}
+        >
+          <StepButton onClick={() => setActiveStep(index)} component={Link} to={step.path}>
+            {step.label}
+          </StepButton>
+        </Step>
+      ))}
+    </Stepper>
         <br />
 
         <Grid container spacing={2} sx={{ flexGrow: 1 }}>

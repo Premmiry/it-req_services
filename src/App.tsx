@@ -11,6 +11,7 @@ import ListServices from './components/it-services/ListServices';
 import ServiceDetails from './components/it-services/ServiceDetails';
 import ITAdminForm from './components/it-services/ITAdminForm';
 import ManagerApprovePage from './components/it-services/ManagerApprove';
+import TaskManagementMockup from './components/it-services/task-management';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <br />
       <Routes>
         <Route path="/" element={<Content />} />
+        {/* <Route path="/" element={<TaskManagementMockup/>} /> */}
         <Route path="/list-services" element={<ListServices />} />
         <Route path="/it-services" element={<Services />} />
         <Route path="/service/:id" element={<ServiceDetails />} />
