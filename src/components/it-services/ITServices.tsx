@@ -29,6 +29,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { Link } from 'react-router-dom';
+import Switch from '@mui/joy/Switch';
+
 
 const Item = styled(Sheet)(({ theme }) => ({
   backgroundColor:
@@ -67,41 +69,87 @@ function Services() {
   // const steps = ['Request', 'IT Admin', 'Manager Approve', 'Director Approved'];
   const [activeStep, setActiveStep] = useState<number>(0);
 
-  
+  // SwitchDecorators
+  const [dark, setDark] = React.useState<boolean>(false);
+
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-      <Stepper>
-      {steps.map((step, index) => (
-        <Step
-          key={step.label}
-          indicator={
-            <StepIndicator
-              variant={activeStep <= index ? 'soft' : 'solid'}
-              color={activeStep < index ? 'neutral' : 'primary'}
+        <Stepper>
+          {steps.map((step, index) => (
+            <Step
+              key={step.label}
+              indicator={
+                <StepIndicator
+                  variant={activeStep <= index ? 'soft' : 'solid'}
+                  color={activeStep < index ? 'neutral' : 'primary'}
+                >
+                  {activeStep <= index ? index + 1 : <Check />}
+                </StepIndicator>
+              }
+              sx={{
+                '&::after': {
+                  ...(activeStep > index && index !== 2 && { bgcolor: 'primary.solidBg' }),
+                },
+              }}
             >
-              {activeStep <= index ? index + 1 : <Check />}
-            </StepIndicator>
-          }
-          sx={{
-            '&::after': {
-              ...(activeStep > index && index !== 2 && { bgcolor: 'primary.solidBg' }),
-            },
-          }}
-        >
-          <StepButton onClick={() => setActiveStep(index)} component={Link} to={step.path}>
-            {step.label}
-          </StepButton>
-        </Step>
-      ))}
-    </Stepper>
+              <StepButton onClick={() => setActiveStep(index)} component={Link} to={step.path}>
+                {step.label}
+              </StepButton>
+            </Step>
+          ))}
+        </Stepper>
         <br />
 
         <Grid container spacing={2} sx={{ flexGrow: 1 }}>
           <Grid xs={6}>
-            <Box><h2>IT Request</h2></Box>
+            {/* <Box><h2>IT Request</h2></Box> */}
+            {/* <Select
+                    action={action}
+                    value={value1}
+                    placeholder="เลือก Request"
+                    onChange={(e, newValue) => setValue1(newValue)}
+                    variant="outlined" color="success"
+                    {...(value1 && {
+                      endDecorator: (
+                        <IconButton
+                          size="sm"
+                          variant="plain"
+                          color="neutral"
+                          onMouseDown={(event) => {
+                            event.stopPropagation();
+                          }}
+                          onClick={() => {
+                            setValue1(null);
+                            action.current?.focusVisible();
+                          }}
+                        >
+                          <CloseRounded />
+                        </IconButton>
+                      ),
+                      indicator: null,
+                    })}
+                  >
+                    <Option value="1">IT Request</Option>
+                    <Option value="2">IT Service</Option>
+                  </Select> */}
+
+<Switch
+      color={dark ? 'primary' : 'danger'}
+      slotProps={{ input: { 'aria-label': 'dark mode' } }}
+      startDecorator={
+        <span style={{ color: dark ? 'gray' : 'red' }}>IT Request</span>
+      }
+      endDecorator={
+        <span style={{ color: dark ? 'blue' : 'gray' }}>IT Service</span>
+      }
+      checked={dark}
+      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+        setDark(event.target.checked)
+      }
+    />
           </Grid>
           <Grid xs={6}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -260,7 +308,7 @@ function Services() {
           </Grid>
 
           <Grid xs={7}>
-          <Box sx={{ my: 1 }}>
+            <Box sx={{ my: 1 }}>
               <FormLabel>หัวข้อเรื่อง</FormLabel>
               <Textarea
                 size="md" name="Size" placeholder="Subject here…"
