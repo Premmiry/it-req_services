@@ -32,27 +32,33 @@ import { Link } from 'react-router-dom';
 import Switch from '@mui/joy/Switch';
 
 
-const Item = styled(Sheet)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'dark' ? theme.palette.background.level1 : '#fff',
-  ...theme.typography['body-sm'],
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  borderRadius: 4,
-  color: theme.vars.palette.text.secondary,
-}));
 
-const steps = [
-  { label: 'Request', path: '/it-services' },
-  { label: 'IT Admin', path: '/it-manager' },
-  { label: 'Manager Approve', path: '/it-admin' },
-  { label: 'Director Approved', path: '/director-approved' }
-];
+import Paper from '@mui/material/Paper';
+import Fade from '@mui/material/Fade';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
+
+const icon = (
+  <Paper sx={{ m: 1, width: 100, height: 100 }} elevation={4}>
+    <svg>
+      <Box
+        component="polygon"
+        points="0,100 50,00, 100,100"
+        sx={(theme) => ({
+          fill: theme.palette.common.white,
+          stroke: theme.palette.divider,
+          strokeWidth: 1,
+        })}
+      />
+    </svg>
+  </Paper>
+);
+
+
 
 function Services() {
-  const [value1, setValue1] = useState<string | null>('approve');
-  const [value2, setValue2] = useState<string | null>('approve');
-  const action: SelectStaticProps['action'] = React.useRef(null);
+
+
   const [files, setFiles] = useState<File[]>([]);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,96 +72,80 @@ function Services() {
     setFiles((prevFiles) => prevFiles.filter((_, index) => index !== fileIndex));
   };
 
-  // const steps = ['Request', 'IT Admin', 'Manager Approve', 'Director Approved'];
-  const [activeStep, setActiveStep] = useState<number>(0);
+
 
   // SwitchDecorators
   const [dark, setDark] = React.useState<boolean>(false);
 
+  //
+  const [checked, setChecked] = React.useState(false);
+
+  const handleChange = () => {
+    setChecked((prev) => !prev);
+  };
+
+
+  const renderStatusContent = (status: string) => {
+    switch (status) {
+      case '1':
+        return
+      case '2':
+        return
+      case '3':
+        return
+      case '4':
+        return
+      case '5':
+        return
+      default:
+        return null;
+    }
+  };
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Stepper>
-          {steps.map((step, index) => (
-            <Step
-              key={step.label}
-              indicator={
-                <StepIndicator
-                  variant={activeStep <= index ? 'soft' : 'solid'}
-                  color={activeStep < index ? 'neutral' : 'primary'}
-                >
-                  {activeStep <= index ? index + 1 : <Check />}
-                </StepIndicator>
-              }
-              sx={{
-                '&::after': {
-                  ...(activeStep > index && index !== 2 && { bgcolor: 'primary.solidBg' }),
-                },
-              }}
-            >
-              <StepButton onClick={() => setActiveStep(index)} component={Link} to={step.path}>
-                {step.label}
-              </StepButton>
-            </Step>
-          ))}
-        </Stepper>
+
         <br />
+
+        <Box sx={{ height: 180 }}>
+          <FormControlLabel
+            control={
+              <Switch
+                color={dark ? 'primary' : 'danger'}
+                slotProps={{ input: { 'aria-label': 'dark mode' } }}
+                startDecorator={
+                  <span style={{ color: dark ? 'gray' : 'red' }}>IT Request</span>
+                }
+                endDecorator={
+                  <span style={{ color: dark ? 'blue' : 'gray' }}>IT Service</span>
+                }
+                checked={dark}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  setDark(event.target.checked)
+                }
+              />
+            }
+
+          />
+          <Box sx={{ display: 'flex' }}>
+            <Fade in={dark}>{icon}</Fade>
+          </Box>
+        </Box>
+
 
         <Grid container spacing={2} sx={{ flexGrow: 1 }}>
           <Grid xs={6}>
-            {/* <Box><h2>IT Request</h2></Box> */}
-            {/* <Select
-                    action={action}
-                    value={value1}
-                    placeholder="เลือก Request"
-                    onChange={(e, newValue) => setValue1(newValue)}
-                    variant="outlined" color="success"
-                    {...(value1 && {
-                      endDecorator: (
-                        <IconButton
-                          size="sm"
-                          variant="plain"
-                          color="neutral"
-                          onMouseDown={(event) => {
-                            event.stopPropagation();
-                          }}
-                          onClick={() => {
-                            setValue1(null);
-                            action.current?.focusVisible();
-                          }}
-                        >
-                          <CloseRounded />
-                        </IconButton>
-                      ),
-                      indicator: null,
-                    })}
-                  >
-                    <Option value="1">IT Request</Option>
-                    <Option value="2">IT Service</Option>
-                  </Select> */}
 
-<Switch
-      color={dark ? 'primary' : 'danger'}
-      slotProps={{ input: { 'aria-label': 'dark mode' } }}
-      startDecorator={
-        <span style={{ color: dark ? 'gray' : 'red' }}>IT Request</span>
-      }
-      endDecorator={
-        <span style={{ color: dark ? 'blue' : 'gray' }}>IT Service</span>
-      }
-      checked={dark}
-      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-        setDark(event.target.checked)
-      }
-    />
+
+
           </Grid>
           <Grid xs={6}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <FormLabel>
                 <h5>Request No.</h5>
-                <Input placeholder="67/0001"
+                <Input placeholder="67-0001"
                   sx={{
                     width: 100, '--Input-radius': '0px',
                     borderBottom: '2px solid',
@@ -198,116 +188,29 @@ function Services() {
             </Box>
             <Box sx={{ my: 1 }}>
               <FormLabel>เบอร์ติดต่อ</FormLabel>
-              <Input placeholder="พัฒนาโปรแกรม" variant="outlined" color="primary" type="text" />
+              <Input placeholder="57976" variant="outlined" color="primary" type="text" />
             </Box>
 
-            <Box>
-              <Box sx={{ my: 1 }}>
-                <FormLabel>Manager Approve</FormLabel>
-                <Input placeholder="Manager name" variant="outlined" color="success" type="text" />
-              </Box>
-              <Box sx={{ my: 1 }}>
-                <FormLabel>Manager Email</FormLabel>
-                <Input placeholder="Manager@Email.com" variant="outlined" color="success" type="email" />
-              </Box>
+            <Box sx={{ my: 1 }}>
+              <FormLabel>ประเภท</FormLabel>
 
-              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-                <Box sx={{ my: 1 }}>
-                  <FormLabel>Manager Approve Status</FormLabel>
-                  <Select
-                    action={action}
-                    value={value1}
-                    placeholder="Status"
-                    onChange={(e, newValue) => setValue1(newValue)}
-                    variant="outlined" color="success"
-                    {...(value1 && {
-                      endDecorator: (
-                        <IconButton
-                          size="sm"
-                          variant="plain"
-                          color="neutral"
-                          onMouseDown={(event) => {
-                            event.stopPropagation();
-                          }}
-                          onClick={() => {
-                            setValue1(null);
-                            action.current?.focusVisible();
-                          }}
-                        >
-                          <CloseRounded />
-                        </IconButton>
-                      ),
-                      indicator: null,
-                    })}
-                  >
-                    <Option value="approve">อนุมัติ</Option>
-                    <Option value="unapprove">ไม่อนุมัติ</Option>
-                    <Option value="discuss">พิจารณา</Option>
-                    <Option value="cancel">ยกเลิก</Option>
-                  </Select>
-                </Box>
-
-                <Box sx={{ my: 1 }}>
-                  <FormLabel>Manager Approve Date</FormLabel>
-                  <Input variant="outlined" color="success" type="date" />
-                </Box>
-              </Box>
-
-              <Box sx={{ my: 1 }}>
-                <FormLabel>Director Approve</FormLabel>
-                <Input placeholder="Director name" variant="outlined" color="warning" type="text" />
-              </Box>
-
-              <Box sx={{ my: 1 }}>
-                <FormLabel>Director Email</FormLabel>
-                <Input placeholder="Director@Email.com" variant="outlined" color="warning" type="email" />
-              </Box>
-
-              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-                <Box sx={{ my: 1 }}>
-                  <FormLabel>Director Approve Status</FormLabel>
-                  <Select
-                    action={action}
-                    value={value2}
-                    placeholder="Status"
-                    onChange={(e, newValue) => setValue2(newValue)}
-                    variant="outlined" color="warning"
-                    {...(value2 && {
-                      endDecorator: (
-                        <IconButton
-                          size="sm"
-                          variant="plain"
-                          color="neutral"
-                          onMouseDown={(event) => {
-                            event.stopPropagation();
-                          }}
-                          onClick={() => {
-                            setValue2(null);
-                            action.current?.focusVisible();
-                          }}
-                        >
-                          <CloseRounded />
-                        </IconButton>
-                      ),
-                      indicator: null,
-                    })}
-                  >
-                    <Option value="approve">อนุมัติ</Option>
-                    <Option value="unapprove">ไม่อนุมัติ</Option>
-                    <Option value="discuss">พิจารณา</Option>
-                    <Option value="cancel">ยกเลิก</Option>
-                  </Select>
-                </Box>
-
-                <Box sx={{ my: 1 }}>
-                  <FormLabel>Director Approve Date</FormLabel>
-                  <Input variant="outlined" color="warning" type="date" />
-                </Box>
-              </Box>
+              <Select defaultValue="1" variant="outlined" color="primary">
+                <Option value="1">พัฒนาโปรแกรม</Option>
+                <Option value="2">แก้ไขโปรแกรม</Option>
+                <Option value="3">เพิ่มสิทธิ์</Option>
+                <Option value="4">เพิ่ม Report</Option>
+              </Select>
             </Box>
+
+
+
           </Grid>
 
           <Grid xs={7}>
+
+
+
+
             <Box sx={{ my: 1 }}>
               <FormLabel>หัวข้อเรื่อง</FormLabel>
               <Textarea
@@ -316,39 +219,10 @@ function Services() {
               />
             </Box>
 
-            <Box>
-              <FormLabel>วัตถุประสงค์</FormLabel>
-              <Textarea
-                minRows={2}
-                placeholder="Type in here…"
-                variant="outlined"
-                color="primary"
-                sx={{
-                  borderBottom: '2px solid',
-                  borderColor: 'neutral.outlinedBorder',
-                  borderRadius: 0,
-                  '&:hover': {
-                    borderColor: 'neutral.outlinedHoverBorder',
-                  },
-                  '&::before': {
-                    border: '1px solid var(--Textarea-focusedHighlight)',
-                    transform: 'scaleX(0)',
-                    left: 0,
-                    right: 0,
-                    bottom: '-2px',
-                    top: 'unset',
-                    transition: 'transform .15s cubic-bezier(0.1,0.9,0.2,1)',
-                    borderRadius: 0,
-                  },
-                  '&:focus-within::before': {
-                    transform: 'scaleX(1)',
-                  },
-                }}
-              />
-            </Box>
+
 
             <Box sx={{ my: 1 }}>
-              <FormLabel>ความต้องการ</FormLabel>
+              <FormLabel>รายละเอียด</FormLabel>
               <Textarea
                 minRows={2}
                 placeholder="Type in here…"
@@ -449,6 +323,22 @@ function Services() {
 
 const top100Films = [
   { label: 'พัฒนาโปรแกรม' },
+  { label: 'จัดซื้อ' },
+  { label: 'ทรัพยากรบุคคล' },
+  { label: 'การเงิน' },
+  { label: 'ศูนย์เทคโนโลยีสารสนเทศ' },
+];
+
+const top101Films = [
+  { label: 'แจ้งซ่อมบำรุงคอมฯ' },
+  { label: 'จัดซื้อ' },
+  { label: 'ทรัพยากรบุคคล' },
+  { label: 'การเงิน' },
+  { label: 'ศูนย์เทคโนโลยีสารสนเทศ' },
+];
+
+const top102Films = [
+  { label: 'แจ้งซ่อมบำรุงคอมฯ' },
   { label: 'จัดซื้อ' },
   { label: 'ทรัพยากรบุคคล' },
   { label: 'การเงิน' },
